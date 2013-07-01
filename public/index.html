@@ -1,0 +1,799 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
+
+    <style>
+      body {
+        /*font-family: Helvetica, sans-serif;*/
+        font-family: 'Roboto Condensed', sans-serif;
+        background: #FFFCF4;
+        color: #47393C;
+        padding: 0;
+        margin: 0;
+      }
+
+      a {
+        color: #3BD3CE;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      h2, h3 {
+        font-weight: 100;
+      }
+
+
+      h3 {
+        color: #EB077E;
+      }
+
+      input[type='range'] {
+        -webkit-appearance: none !important;
+        background-color: #888;
+        display: block;
+        height: 2px;
+      }
+
+      input[type='range']::-webkit-slider-thumb,
+      input[type='range']::-moz-slider-thumb {
+        -webkit-appearance: none !important;
+        -webkit-border-radius: 32px;
+        background-color: #fff;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#fff));
+        border: 1px solid #999;
+        height: 32px;
+        width: 32px;
+      }
+  
+
+      .container {
+        display: table;
+        width: 100%;
+        padding: 0 18px;
+        -webfkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      .sticky {
+        position: fixed;
+      }
+
+      .sticky-top {
+        top: 0;
+      }
+
+      .sticky-bottom {
+        bottom: 0;
+      }
+
+      .columns {
+        display: table;
+        width: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      .inline-columns {
+        font-size: 0;
+      }
+
+      .columns > .column {
+        float: left;
+        display: table;
+        padding-left: 24px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      .columns > .column:first-child {
+        padding-left: 0;
+      }
+
+      .inline-columns > .column {
+        float: none;
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 1rem;
+      }
+
+      .columns > .column-1  { width:  8.33333333333333%; }
+      .columns > .column-2  { width: 16.66666666666666%; }
+      .columns > .column-3  { width: 25%; }
+      .columns > .column-4  { width: 33.33333333333333%; }
+      .columns > .column-5  { width: 41.66666666666666%; }
+      .columns > .column-6  { width: 50%; }
+      .columns > .column-7  { width: 58.33333333333333%; }
+      .columns > .column-8  { width: 66.66666666666666%; }
+      .columns > .column-9  { width: 75%; }
+      .columns > .column-10 { width: 83.33333333333333%; }
+      .columns > .column-11 { width: 91.66666666666666%; }
+      .columns > .column-12 { width: 100%; }
+
+      .app-container {
+        margin-bottom: 20px;
+      }
+
+      .app-header {
+        position: relative;
+        min-height: 58px;
+        background: #E83350; /* Blue */
+        color: #362D2F;
+        text-shadow: 0 1px 0 #E96D6D;
+        box-shadow:
+              inset 0 -1px 0 #7A1F3F,
+                    0  1px 0 rgba(0, 0, 0, 0.34);
+        padding-top: 6px;
+        padding-bottom: 6px;
+      }
+
+      .app-title {
+        display: table;
+        width: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
+        padding-right: 80px;
+      }
+
+      .app-velocity {
+        position: absolute;
+        top: 0;
+        right: 0;
+        text-align: center;
+        height: 100%;
+        padding-top: 8px;
+        padding-right: 8px;
+        padding-left: 8px;
+        background: rgba(0, 0, 0, 0.1);
+        border-left: solid 1px rgba(0, 0, 0, 0.2);
+        box-shadow: inset 1px 0 0 #E83350;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      .app-velocity > .velocity {
+        
+      }
+
+      #svg-assets {
+        display: none;
+      }
+
+      .visualizer {
+        display: inline-block;
+        width: 120px;
+        height: 120px;
+      }
+
+      .visualizer + .visualizer {
+        margin-left: 50px;
+      }
+
+      .visualizer-title {
+        margin: 0;
+        margin-bottom: 6px;
+      }
+
+      .distance {
+        overflow: hidden;
+      }
+
+      .distance-title {
+        margin-bottom: 4px;
+      }
+
+      .visualizer-distance .distance-line {
+        height: 10px;
+        background: #ddd;
+        margin-top: -12px;
+        border-bottom: dotted 12px #959CA8;
+      }
+
+      .distance-at-current .distance-line {
+        /*background: #E8E86C;*/ /* Yellow */
+      }
+
+      .container.spaceship-and-clock {
+        margin-top: 24px;
+        text-align: center;
+      }
+
+      .spaceship {
+        margin-top: 14px;
+        -webkit-transition: -webkit-transform 0.1s linear;
+        -moz-transition: -moz-transform 0.1s linear;
+        -ms-transition: -ms-transform 0.1s linear;
+        -o-transition: -o-transform 0.1s linear;
+        transition: transform 0.1s linear;
+      }
+
+      /* specify container to override margin */
+      .container.app-footer {
+        padding: 0 22px 0 18px;
+        margin-top: 32px;
+      }
+
+      .footer-title {
+        margin-top: 0;
+        margin-bottom: 28px;
+      }
+
+      .velocity-controls {
+        margin-bottom: 12px;
+      }
+
+      .velocity-controls > .velocity-control:first-child {
+        margin-top: 0;
+      }
+
+      .velocity-control {
+        width: 100%;
+        margin-top: 40px;
+      }
+
+      .section {
+        margin-top: 50px;
+      }
+
+      .section > h2:first-child {
+        margin-top: 0;
+      }
+
+      .section-about p:first-child {
+        margin-top: 0;
+      }
+
+      .section-about .photo-wrapper > img {
+        width: 100%;
+      }
+
+      .section-footer {
+        padding-top: 40px;
+        background: #47393C;
+        box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.5);
+        color: #FFFCF4;
+      }
+
+      .section-footer p,
+      .section-footer li {
+        font-weight: 100;
+      }
+
+      .section-footer-contain {
+        opacity: 0.5;
+        filter: alpha(50);
+      }
+
+      .ohai-title {
+        font-size: 74px;
+        margin: 0;
+      }
+
+      .creds-and-references-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      @media (min-width: 960px) {
+        .container {
+          width: 960px;
+          margin: 0 auto;
+        }
+      }
+      
+      @media (min-width: 491px) and (max-width: 624px) {
+        .app-title {
+          font-size: 24px;
+          margin-top: 6px;
+        }
+      }
+
+      @media (max-width: 490px) {
+        
+        .column.column-1,  .column.column-2,
+        .column.column-3,  .column.column-4,
+        .column.column-5,  .column.column-6,
+        .column.column-7,  .column.column-8,
+        .column.column-9,  .column.column-10,
+        .column.column-11, .column.column-12 {
+          width: 100%;
+          padding-left: 0;
+        }
+      }
+
+      @media (min-width: 401px) and (max-width: 490px) {
+        .app-title {
+          font-size: 18px;
+          margin-top: 8px;
+        }
+      }
+
+      @media (max-width: 400px){
+
+        .app-title {
+          font-size: 18px;
+          padding-right: 120px;
+        }
+
+        .app-velocity {
+          padding-top: 9px;
+        }
+
+        .visualizer + .visualizer {
+          margin-left: 26px;
+        }
+
+        .visualizer-distance > .distance-title:first-child {
+          margin-top: 10px;
+        }
+
+        .section-about p:first-child {
+          margin-top: 18px;
+        }
+      }
+    </style>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="two.js"></script>
+    <script>
+      // In %
+      var C = 100;
+
+      var lorentz = function(v){
+        return 1 / Math.sqrt( 1 - ( Math.pow(v, 2) / Math.pow(C, 2) ) );
+      };
+
+      var lorentzPercent = function(percentOfC){
+        return 1 / Math.sqrt( 1 - ( Math.pow(v, 2) / Math.pow(100, 2) ) );
+      };
+
+      var Visual = function(){
+        return this;
+      };
+
+      var pad = function(n, width, z){
+        z = z || '0';
+        n = n + '';
+        return n.length >= width ? n : n + new Array(width - n.length + 1).join(z);
+      };
+
+      Visual.prototype.init = function($el, options){
+        options = options || {};
+
+        var allowed = ['width', 'height'];
+        var this_ = this;
+        var _options = {};
+
+        for (var i = 0, l = allowed.length; i < l; ++i){
+          if (allowed[i] in options)
+            _options[ allowed[i] ] = options[ allowed[i] ];
+        }
+
+        this.$el = $el;
+        this.two = new Two(_options).appendTo( this.$el[0] );
+        this.two.bind('update', function(frameCount){
+          this_.onUpdate(frameCount);
+        });
+        this.background = this.two.makeGroup();
+      };
+
+      Visual.prototype.play = function(){
+        this.two.play();
+      };
+
+      Visual.prototype.onUpdate = function(frameCount){
+        return;
+      };
+
+      var Clock = function($el, options){
+        options = options || {};
+
+        var defaults = {
+          radius:         50
+        , handBorderGap:  8
+        , fill:           '#FFFCF4'
+        , borderColor:    '#362D2F'
+        , lineColor:      '#362D2F'
+        , borderWidth:    4
+        , lineWidth:      2
+        , width:          120
+        , height:         120
+        };
+
+        this.options = {};
+
+        for (var key in defaults)
+          this.options[key] = (key in options) ? options[key] : defaults[key];
+
+        this.init( $el , this.options);
+
+        this.index = 6;
+        this.step = 6;
+
+        this.border = this.two.makeCircle(
+          this.options.radius + 10
+        , this.options.radius + 10
+        , this.options.radius + this.options.handBorderGap
+        );
+
+        this.border.stroke    = this.options.borderColor;
+        this.border.fill      = this.options.fill;
+        this.border.linewidth = this.options.borderWidth;
+
+        this.hand = this.two.makeLine(
+          this.options.radius + 10
+        , this.options.radius + 10
+        , this.options.radius + 10
+        , this.options.radius + 10 + (Math.sin(0) * this.options.radius)
+        );
+
+        this.hand.fill = this.options.lineColor;
+        this.hand.linewidth = this.options.lineWidth;
+
+        this.background.add( this.border );
+        this.background.add( this.hand );
+
+        return this;
+      };
+
+      Clock.prototype = new Visual();
+
+      Clock.prototype.onUpdate = function(frameCount){
+        if (this.index > 360) this.index = 0;
+        var angle = ((this.index += this.step) % 360) * (Math.PI / 180);
+
+        this.hand.vertices[1].set(
+          Math.cos(angle) * this.options.radius
+        , Math.sin(angle) * this.options.radius
+        );
+      };
+
+      var Spaceship = function($el, options){
+        var this_ = this;
+
+        options = options || {};
+
+        var defaults = {
+          color:          '#362D2F'
+        , path:           '#asset-spaceship'
+        , tickInt:        60
+        , maxJerk:        4
+        , skewFactor:     10
+        , terrellDampen:  0.8
+        };
+
+        this.options = {};
+
+        this.velocity = 0;
+        
+        this.transforms = {
+          rotate: '90deg'
+        , scale:  1.4
+        , skewY:  '0deg'
+        , scaleY:  1
+        };
+
+        this.jerkFactor = 0;
+
+        for (var key in defaults)
+          this.options[key] = (key in options) ? options[key] : defaults[key];
+
+        this.$svg = $(this.options.path).clone();
+        this.$svg.attr('id', this.options.path + '-' + ++this.constructor.numInstances);
+        this.$el = $el.append( this.$svg );
+
+        this.$svg.css('fill', this.options.color);
+
+        // Weird SVG CSS bug
+        setTimeout(function(){ this_.renderTransforms(); }, 1);
+
+        return this;
+      };
+
+      Spaceship.numInstances = 0;
+
+      Spaceship.prototype.play = function(){
+        var this_ = this;
+        this.tick = setInterval(function(){
+          this_.onTick();
+        }, this.options.tickInt);
+      };
+
+      Spaceship.prototype.onTick = function(){
+        // No reason to perform jerk computation
+        if (this.jerkFactor == 0)
+          this.transforms.rotate = 90 + 'deg';
+        else {
+          var val = +( Math.random() * this.jerkFactor ).toFixed(1);
+          if (Math.random() > 0.5) val = 0 - val;
+          this.transforms.rotate = 90 + val + 'deg';
+        }
+        this.renderTransforms();
+      };
+
+      Spaceship.prototype.setVelocity = function(velocity){
+        this.velocity = velocity;
+        this.jerkFactor = velocity * this.options.maxJerk;
+        this.transforms.skewY = Math.asin( velocity ) * this.options.skewFactor + 'deg';
+        this.transforms.scaleY = lorentz( velocity * 100 * this.options.terrellDampen );
+        this.renderTransforms();
+        return this;
+      };
+
+      Spaceship.prototype.renderTransforms = function(){
+        var vendors = ['-webkit-', '-moz', '-ms-', '-o-', ''], val = "";
+
+        for (var property in this.transforms)
+          val += ' ' + property + '(' + this.transforms[ property ] + ')';
+
+        for (var i = 0, l = vendors.length; i < l; ++i)
+          this.$svg.css( 'transform', val );
+
+        return this;
+      };
+
+      var app = {
+        attributes: {
+          velocity: '0.0000'
+        }
+
+      , events: {
+          'change .velocity-control': 'onVelocityChange'
+        }
+
+      , $el: '.app-container'
+
+      , $els: {
+          $velocityPercent:     '.velocity-percent-c'
+        , $velocityPercentDec:  '.velocity-percent-c-decimal'
+        , $clock:               '.visualizer-clock'
+        , $spaceship:           '.visualizer-spaceship'
+        , $distance:            '.distance-at-current > .distance-line'
+        }
+
+      , init: function(){
+          app.evaluateElements();
+          app.delegateEvents();
+
+          app.clock = new Clock( app.$clock );
+          app.clock.play();
+
+          app.spaceship = new Spaceship( app.$spaceship );
+          app.spaceship.play();
+
+          // Just set velocity wherever the sliders are at
+          // Weird SVG CSS bug
+          setTimeout(function(){ app.onVelocityChange(); }, 1);
+
+          return app;
+        }
+
+      , evaluateElements: function(){
+          app.$el = $( app.$el );
+
+          for (var key in app.$els){
+            app[key] = app.$el.find( app.$els[key] );
+          }
+
+          return app;
+        }
+
+      , delegateEvents: function(){
+          var parts;
+
+          if (app._hasDelegatedEvents) {
+            for (var key in app.events){
+              parts = key.split(' ');
+              app.$el.find( parts.slice(1).join(' ') ).off( app[ app.events[key] ] );
+            }
+          }
+
+          for (var key in app.events){
+            parts = key.split(' ');
+            app.$el.find( parts.slice(1).join(' ') ).on( parts[0], app[ app.events[key] ] );
+          }
+
+          app._hasDelegatedEvents = true;
+
+          return app;
+        }
+
+      , render: function(attr){
+          var attributes = app.attributes;
+
+          if (attr) {
+            attributes = {};
+            attributes[attr] = app.attributes[attr];
+          }
+
+          for (var key in attributes){
+            app.$el.find('.data-' + key).html(
+              this.renderFns[ key ]
+                ? this.renderFns[ key ]( attributes[key] )
+                : attributes[key]
+            );
+          }
+
+          return app;
+        }
+
+      , renderFns: {
+          velocity: function(val){
+            val *= 100;
+
+            val = val.toFixed(4);
+
+            if (val.length == 6) val = "0" + val;
+
+            return val;
+          }
+        }
+
+      , updateVelocity: function(velocity){
+          app.attributes.velocity = velocity;
+          app.spaceship.setVelocity( +velocity );
+          app.$distance.css( 'width', (100 / lorentz( velocity * 100 ) ) + '%');
+          app.render('velocity');
+
+          return app;
+        }
+
+      , onVelocityChange: function(e){
+          var val = app.$velocityPercent.val() / 100;
+          val += app.$velocityPercentDec.val() / 1000000;
+          app.clock.step = 6 * (Math.sqrt(1 - (val * val)));
+          app.updateVelocity( val );
+        }
+      };
+
+      $(function(){
+        app.init();
+      });
+    </script>
+
+    <style>
+      
+    </style>
+  </head>
+  <body>
+
+    <!-- ################## -->
+    <!--  Main Application  -->
+    <!-- ################## -->
+    <div class="app-container">
+
+      <!-- Application Header -->
+      <div class="app-header container">
+        <h1 class="app-title">Visualizing the Lorentz Transformation</h1>
+        <div class="app-velocity">
+          Velocity:
+          <div class="velocity">
+            <span class="data-velocity">0.0000</span>% C
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Distance Visualizer -->
+      <div class="container visualizer-distance">
+
+        <!-- Rest Distance -->
+        <h3 class="distance-title">1 Lightyear at rest</h3>
+        <div class="distance distance-at-rest">
+          <div class="distance-line"></div>
+        </div>
+
+        <!-- At {velocity} Distance -->
+        <h3 class="distance-title">1 Lightyear at current speed</h3>
+        <div class="distance distance-at-current">
+          <div class="distance-line"></div>
+        </div>
+
+      </div>
+
+      <!-- Spaceship and Clock Visualizers -->
+      <div class="container spaceship-and-clock">
+        
+        <!-- Spaceship -->
+        <div class="visualizer visualizer-spaceship">
+          <h4 class="visualizer-title">Your Spaceship</h4>
+        </div>
+
+        <!-- Clock -->
+        <div class="visualizer visualizer-clock">
+          <h4 class="visualizer-title">1 Second</h4>
+        </div>
+      </div>
+
+      <!-- Footer and Velocity Controls -->
+      <div class="app-footer container">
+
+        <h3 class="footer-title">
+          <span class="data-velocity">0.0000</span>% C
+        </h3>
+        
+        <div class="velocity-controls">
+          <input class="velocity-control velocity-percent-c" type="range" value="0" min="0" max="99">
+          <input class="velocity-control velocity-percent-c-decimal" type="range" value="0" min="0" max="9999">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container section section-about">
+      <h2>What is all this jibber jabber about?</h2>
+      <div class="columns">
+        <div class="column column-4 photo-wrapper">
+          <img src="lorentz.jpg" alt="Hendrik Lorentz being a badass">
+        </div>
+        <div class="column column-8">
+          <p>This is the result of my pondering on the <a target="_blank" href="https://en.wikipedia.org/wiki/Lorentz_transformation">Lorentz Transformation</a>, which is the result of <a target="_blank" href="https://en.wikipedia.org/wiki/Hendrik_Lorentz">Hendrik Lorentz's</a> pondering on how the speed of light is observed to be constant in all frames of reference. This constancy requires us to make variables out of things we once thought were constants. Those variables are space and time.</p>
+          <p>I came to the realization that as an observer approaches the speed of light, the distances that were once observed at rest now appear to be much shorter. As a matter of fact, <em>all distances go to 0 as one approaches the speed of light</em>. This goes against all of my intution and I wanted to play with the relationship between velocity and space/time. That's why I made this. I don't study physics, but I find this relationship particularly profound.</p>
+        </div>
+      </div>
+
+      <h2>Some things to note</h2>
+      <p>The visualizations are a bit conflated in terms of reference frames. The <em>Distance Visualizer</em> shows how far one light year appears to you compared to observers at rest. The <em>Clock Visualizer</em> is from the reference frame of someone at rest looking at your &quot;1 Second Clock&quot;. As you approach the speed of light, if they could <em>possibly</em> make out anything on your ship, they would see that all of the natural processes have slowed.</p>
+      <p>Oh, and the spaceship distortion is a sham. I wanted to implement the <a target="_blank" href="https://en.wikipedia.org/wiki/Terrell_rotation">Penrose-Terrell Rotation</a>, which would cause an elongation plus a rotation along the Z-axis, but given the spaceship is a 2D SVG, I can't really do that. Plus, as you approached the speed of light, the spaceship skews into infinity in the direction the ship is moving. It's really wild stuff.</p>
+      <p>Why does it skew into infinity? Think about it. Say you're the one at rest. This spaceship is about to fly by you from left to right at a considerable distance away. The way you see that ship is from light that is emitted and bounced off the ship and back into your eyes. The ship is going fast enough to hit a loooooong line of photons spanning many many miles in almost parallel. All of those photons come back to your eyes and the result is an elongated ship. Not only elongated, but you can also see some of the back of the ship, like it has been rotated. Really wild stuff.</p>
+    </div>
+
+    <footer class="section section-footer">
+      <div class="container columns section-footer-contain">
+        <div class="column column-7 ohai-section">
+          <h4 class="ohai-title">Ohai</h4>
+          <p>My name is <a href="http://j0.hn">John Fawcett</a>. I like stuff and things.</p>
+        </div>
+        <div class="column column-5 creds-and-references">
+          <h4 class="creds-and-references-title">Creds and Reference</h4>
+          <ul class="creds-and-references-list">
+            <li>
+              Spaceship by <a href="http://thenounproject.com/mosaic7">Timothy Dilich</a>
+            </li>
+            <li>
+              <a href="https://en.wikipedia.org/wiki/Lorentz_transformation">Lorentz Transformation</a>
+            </li>
+            <li>
+              <a href="https://en.wikipedia.org/wiki/Terrell_rotation">Terrell Rotation</a>
+            </li>
+            <li>
+              <a href="https://en.wikipedia.org/wiki/Length_contraction">Length Contraction</a>
+            </li>
+            <li>
+              <a href="http://github.com/jrf0110/lorentz">Source Code</a> by me
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </footer>
+
+    <!-- ############ -->
+    <!--  SVG Assets  -->
+    <!-- ############ -->
+    <div id="svg-assets">
+      <!-- Icon courtesty Timothy Dilich http://thenounproject.com/mosaic7 -->
+      <svg id="asset-spaceship" class="spaceship" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" width="100px" height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+      <g id="Captions">
+      </g>
+      <g>
+        <g>
+          <path d="M78.58,62.084c-2.116-1.885-4.551-3.546-7.299-4.922c-1.385-0.694-1.794-1.38-1.642-2.584    c0.913-7.191,0.96-14.373-0.998-21.502c-2.425-8.829-7.811-16.605-16.664-23.825c-0.835-0.658-2.355-0.75-3.588,0.249    c-3.984,3.23-7.389,6.748-10.153,10.583c-4.907,6.814-7.296,14.102-7.907,21.722c-0.393,4.884-0.055,9.753,0.554,14.619    c0.032,0.25-0.128,0.606-0.38,0.769c-2.321,1.508-4.771,2.915-7.006,4.483c-2.726,1.912-4.102,4.295-4.177,7.059    c-0.058,2.089,0.26,4.144,0.907,6.173c1.598,5.011,4.307,9.73,7.368,14.353c0.228,0.344,0.583,0.697,1.011,0.907    c1.339,0.664,2.807,0.311,3.632-0.854c2.126-3.003,4.233-6.012,6.328-9.024c0.265-0.383,0.569-0.532,1.19-0.532    c2.748,0.007,5.495-0.003,8.243-0.001V88c0,1.381,1.119,2.5,2.5,2.5S53,89.381,53,88v-8.245c2.841-0.002,5.683,0.007,8.523-0.001    c0.623-0.003,0.912,0.156,1.18,0.541c1.918,2.757,3.858,5.506,5.828,8.242c0.286,0.396,0.68,0.824,1.185,1.051    c1.415,0.641,2.855,0.24,3.608-1.013c1.664-2.77,3.389-5.525,4.849-8.351c1.735-3.354,3.06-6.802,3.313-10.41    C81.682,67.013,81.135,64.36,78.58,62.084z M34.775,78.004c-1.526,2.225-3.09,4.439-4.749,6.81    c-2.707-4.636-5.212-9.155-5.812-14.069c-0.219-1.782-0.243-3.58,1.145-5.198c1.116-1.305,4.225-3.557,6.207-4.47    c0.243,1.177,0.483,2.323,0.717,3.47c0.862,4.232,1.726,8.466,2.574,12.699C34.906,77.491,34.922,77.79,34.775,78.004z     M62.909,66.756c-0.568,3.085-1.12,6.17-1.682,9.255c-0.016,0.087-0.045,0.173-0.078,0.292c-2.714,0.001-5.431,0.003-8.149,0.004    V59c0-1.381-1.119-2.5-2.5-2.5S48,57.619,48,59v17.31c-2.802,0.002-5.604,0.004-8.431,0.006c-0.518-2.52-1.077-4.953-1.51-7.397    c-0.958-5.426-2.076-10.842-2.72-16.286c-0.903-7.65-0.439-15.262,2.596-22.704c2.282-5.6,5.877-10.715,10.866-15.323    c0.452-0.418,0.891-0.841,1.34-1.261c0.035-0.032,0.098-0.047,0.255-0.12c0.797,0.729,1.64,1.448,2.404,2.206    c4.129,4.098,7.307,8.543,9.387,13.382c2.154,5.014,3.085,10.159,3.22,15.391C65.604,51.78,64.287,59.27,62.909,66.756z     M76.662,69.697c-0.237,3.359-1.608,6.539-3.157,9.681c-0.776,1.57-1.687,3.109-2.641,4.855c-1.704-2.431-3.277-4.659-4.827-6.898    c-0.111-0.16-0.119-0.383-0.083-0.567c1.054-5.281,2.118-10.561,3.183-15.84c0.03-0.146,0.096-0.289,0.176-0.523    c2.436,1.449,4.761,2.868,6.339,4.79C76.798,66.589,76.772,68.151,76.662,69.697z"/>
+          <path d="M50.534,31.449c-1.974,0.001-3.896,0.757-5.412,2.131c-1.471,1.333-2.367,3.312-2.461,5.429    c-0.095,2.148,0.644,4.237,2.023,5.73c1.568,1.696,3.642,2.63,5.836,2.63c1.982,0,3.915-0.783,5.443-2.204    c3.118-2.901,3.298-7.999,0.393-11.131C54.809,32.367,52.741,31.449,50.534,31.449z M48.138,36.784    c0.658-0.599,1.503-0.929,2.378-0.929c0.988,0,1.91,0.405,2.596,1.144c1.288,1.383,1.199,3.664-0.195,4.981    c-0.677,0.638-1.529,0.989-2.401,0.989c-0.941,0-1.838-0.401-2.524-1.13c-0.631-0.67-0.972-1.621-0.934-2.61    C47.093,38.268,47.487,37.376,48.138,36.784z"/>
+        </g>
+      </g>
+      </svg>
+    </div>
+  </body>
+</html>
