@@ -276,7 +276,7 @@
 
       .ohai-title {
         font-size: 74px;
-        margin: 0;
+        margin: 14px 0 -14px 0;
       }
 
       .creds-and-references-list {
@@ -298,7 +298,7 @@
         }
       }
 
-      @media (max-width: 490px) {
+      @media (max-width: 600px) {
         
         .column.column-1,  .column.column-2,
         .column.column-3,  .column.column-4,
@@ -357,14 +357,14 @@
         return 1 / Math.sqrt( 1 - ( Math.pow(v, 2) / Math.pow(100, 2) ) );
       };
 
-      var Visual = function(){
-        return this;
-      };
-
       var pad = function(n, width, z){
         z = z || '0';
         n = n + '';
         return n.length >= width ? n : n + new Array(width - n.length + 1).join(z);
+      };
+
+      var Visual = function(){
+        return this;
       };
 
       Visual.prototype.init = function($el, options){
@@ -738,7 +738,7 @@
         </div>
         <div class="column column-8">
           <p>This is the result of my pondering on the <a target="_blank" href="https://en.wikipedia.org/wiki/Lorentz_transformation">Lorentz Transformation</a>, which is the result of <a target="_blank" href="https://en.wikipedia.org/wiki/Hendrik_Lorentz">Hendrik Lorentz's</a> pondering on how the speed of light is observed to be constant in all frames of reference. This constancy requires us to make variables out of things we once thought were constants. Those variables are space and time.</p>
-          <p>I came to the realization that as an observer approaches the speed of light, the distances that were once observed at rest now appear to be much shorter. As a matter of fact, <em>all distances go to 0 as one approaches the speed of light</em>. This goes against all of my intution and I wanted to play with the relationship between velocity and space/time. That's why I made this. I don't study physics, but I find this relationship particularly profound.</p>
+          <p>I came to the realization that as an observer approaches the speed of light, the distances that were once observed at rest now appear to be much shorter. As a matter of fact, <em>all distances go to 0 as one approaches the speed of light</em>. Could it really be that two observers traveling at different velocities would disagree on how long a meter is? This goes against all of my intution and I wanted to play with the relationship between velocity and space/time. That's why I made this. I don't study physics, but I find this relationship particularly profound.</p>
         </div>
       </div>
 
@@ -750,7 +750,8 @@
 
     <footer class="section section-footer">
       <div class="container columns section-footer-contain">
-        <div class="column column-7 ohai-section">
+        <div class="column column-2" style="height: 1px"></div>
+        <div class="column column-5 ohai-section">
           <h4 class="ohai-title">Ohai</h4>
           <p>My name is <a href="http://j0.hn">John Fawcett</a>. I like stuff and things.</p>
         </div>
