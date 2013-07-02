@@ -346,6 +346,16 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script src="two.js"></script>
     <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-41049204-3', 'j0.hn');
+      ga('send', 'pageview');
+
+    </script>
+    <script>
       // In %
       var C = 100;
 
@@ -549,6 +559,8 @@
 
       , events: {
           'change .velocity-control': 'onVelocityChange'
+        , 'mouseup .velocity-control': 'onVelocityFinish'
+        , 'touchend .velocity-control': 'onVelocityFinish'
         }
 
       , $el: '.app-container'
@@ -653,6 +665,11 @@
           val += app.$velocityPercentDec.val() / 1000000;
           app.clock.step = 6 * (Math.sqrt(1 - (val * val)));
           app.updateVelocity( val );
+        }
+
+      , onVelocityFinish: function(e){
+        console.log('onVelocityFinish', app.attributes.velocity);
+          ga( 'send', 'event', 'input', 'finished-changing', 'velocity sliders', app.attributes.velocity);
         }
       };
 
