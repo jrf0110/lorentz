@@ -75,6 +75,15 @@
         bottom: 0;
       }
 
+      .tip {
+        margin: 20px 0;
+        opacity: 0.8;
+        border-left: solid 5px #555;
+        padding-left: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+
       .columns {
         display: table;
         width: 100%;
@@ -233,6 +242,10 @@
 
       .velocity-controls {
         margin-bottom: 12px;
+      }
+
+      .velocity-controls + .tip {
+        margin-top: 44px;
       }
 
       .velocity-controls > .velocity-control:first-child {
@@ -561,7 +574,8 @@
         }
 
       , events: {
-          'change .velocity-control': 'onVelocityChange'
+          'input .velocity-control': 'onVelocityChange'
+        , 'change .velocity-control': 'onVelocityChange'
         , 'mouseup .velocity-control': 'onVelocityFinish'
         , 'touchend .velocity-control': 'onVelocityFinish'
         }
@@ -745,8 +759,8 @@
           <input class="velocity-control velocity-percent-c" type="range" value="0" min="0" max="99">
           <input class="velocity-control velocity-percent-c-decimal" type="range" value="0" min="0" max="9999">
         </div>
+        <p class="tip">Notice how profoundly the last 1% (bottom slider) changes space/time perception when you're at 99%C vs 1%C</p>
       </div>
-
     </div>
 
     <div class="container section section-about">
